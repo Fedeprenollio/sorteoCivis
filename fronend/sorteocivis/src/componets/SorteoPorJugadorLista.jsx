@@ -22,6 +22,8 @@ export default function SorteoPorJugadorLista({
   mensaje,
   setMensaje,
 }) {
+  const [civsManualesLocales, setCivsManualesLocales] = useState({});
+
   const cargarJugadoresYEstados = async () => {
     try {
       const { data } = await axios.get(
@@ -49,14 +51,23 @@ export default function SorteoPorJugadorLista({
   // 1. Función para agregar manualmente una civ al jugador
   const agregarCivManual = async (jugador, civ) => {
     try {
-      await axios.post(`${import.meta.env.VITE_API_URL}/api/civs/agregar-manual`, {
-        jugador,
-        civ,
-      });
+      await axios.post(
+        `${import.meta.env.VITE_API_URL}/api/civs/agregar-manual`,
+        {
+          jugador,
+          civ,
+        }
+      );
+
       setMensaje(
         `Civilización ${civ} agregada manualmente a usadas para ${jugador}`
       );
-      // No actualizamos localmente porque el socket actualizará automáticamente el estado
+
+      // Guardar civ manual localmente
+      setCivsManualesLocales((prev) => ({
+        ...prev,
+        [jugador]: [...(prev[jugador] || []), civ],
+      }));
     } catch (error) {
       setMensaje(
         error.response?.data?.error ||
@@ -115,7 +126,9 @@ export default function SorteoPorJugadorLista({
 
   const resetear = async (jugador) => {
     try {
-      await axios.post(`${import.meta.env.VITE_API_URL}/api/civs/resetear`, { jugador });
+      await axios.post(`${import.meta.env.VITE_API_URL}/api/civs/resetear`, {
+        jugador,
+      });
       const { data } = await axios.get(
         `${import.meta.env.VITE_API_URL}/api/civs/estado/${jugador}`
       );
@@ -131,7 +144,9 @@ export default function SorteoPorJugadorLista({
 
   const eliminarJugador = async (jugador) => {
     try {
-      await axios.delete(`${import.meta.env.VITE_API_URL}/api/civs/jugadores/${jugador}`);
+      await axios.delete(
+        `${import.meta.env.VITE_API_URL}/api/civs/jugadores/${jugador}`
+      );
       setJugadores((prev) => prev.filter((j) => j !== jugador));
       setEstadoJugadores((prev) => {
         const nuevoEstado = { ...prev };
@@ -211,14 +226,19 @@ export default function SorteoPorJugadorLista({
                 </Typography>
                 <Stack direction="row" flexWrap="wrap" gap={1} my={1}>
                   {estado?.usadas?.length ? (
-                    estado.usadas.map((civ) => (
-                      <Chip
-                        key={civ}
-                        label={civ}
-                        color="default"
-                        variant="filled"
-                      />
-                    ))
+                    estado.usadas.map((civ) => {
+                      const esManual =
+                        civsManualesLocales[jugador]?.includes(civ);
+                      return (
+                        <Chip
+                          key={civ}
+                          label={esManual ? `${civ} (M)` : civ}
+                          color={esManual ? "secondary" : "default"}
+                          variant="filled"
+                          title={esManual ? "Agregada manualmente" : "Sorteada"}
+                        />
+                      );
+                    })
                   ) : (
                     <Typography variant="body2">Ninguna</Typography>
                   )}
