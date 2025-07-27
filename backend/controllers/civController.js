@@ -15,49 +15,16 @@ const CIVS_POR_JUGADOR_PATH = join(
 const JUGADORES_PATH = join(__dirname, "..", "data", "jugadores.json");
 // const CIVS_POR_JUGADOR_PATH = join(__dirname, '..', 'data', 'civs_por_jugador.json');
 
-const civsIniciales = [
-  "Magiares",
-  "Mayas",
-  "Chinos",
-  "Búlgaros",
-  "Bizantinos",
-  "Britanos",
-  "Celtas",
-  "Francos",
-  "Godos",
-  "Hunos",
-  "Italianos",
-  "Japoneses",
-  "Koreanos",
-  "Lituanos",
-  "Malianos",
-  "Mongoles",
-  "Persas",
-  "Polacos",
-  "Portugueses",
-  "Sarracenos",
-  "Sicilianos",
-  "Tártaros",
-  "Teutones",
-  "Turcos",
-  "Vikingos",
-  "Vietnamitas",
-  "Bengalíes",
-  "Dravidianos",
-  "Gurjaras",
-  "Bérberes",
-  "Etíopes",
-  "Incas",
-  "Khmer",
-  "Malayos",
-  "Tailandeses",
-  "Bohemios",
-  "Romanos",
-  "Georgianos",
-  "Armenios",
-  "Eslavos",
-  "Aztecas",
-];
+const civsIniciales =[
+  "Armenios", "Aztecas", "Bengalíes", "Birmanos", "Bizantinos", "Bohemios",
+  "Borgoñes", "Britanos", "Búlgaros", "Celtas", "Chinos", "Coreanos",
+  "Cumanos", "Dravidianos", "Españoles", "Eslavos", "Etíopes", "Francos",
+  "Georgianos", "Godos", "Gurjaras", "Hunos", "Incas", "Indostanos",
+  "Italianos", "Japoneses", "Khmer", "Lituanos", "Magiares", "Malayos",
+  "Malies", "Mayas", "Mongoles", "Persas", "Polacos", "Portugueses",
+  "Romanos", "Sarracenos", "Sicilianos", "Tártaros", "Teutones", "Turcos",
+  "Vikingos", "Vietnamitas"
+]
 
 // Leer JSON seguro, devuelve valorPorDefecto si falla o no existe
 function leerJSONSeguro(ruta, valorPorDefecto) {

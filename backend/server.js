@@ -8,7 +8,7 @@ const io = new Server(httpServer, {
     origin: '*', // o poné tu dominio/frontend
   },
 });
-
+ 
 const PORT = process.env.PORT || 4000;
 
 httpServer.listen(PORT, () => {
