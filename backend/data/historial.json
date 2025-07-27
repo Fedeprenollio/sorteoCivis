@@ -1,0 +1,114 @@
+[
+  {
+    "jugador": "fede",
+    "civ": "Francos"
+  },
+  {
+    "jugador": "as",
+    "civ": "Aztecas"
+  },
+  {
+    "jugador": "ds",
+    "civ": "Vikingos"
+  },
+  {
+    "jugador": "qw",
+    "civ": "Mongoles"
+  },
+  {
+    "jugador": "fede",
+    "civ": "Gurjaras"
+  },
+  {
+    "jugador": "as",
+    "civ": "Bengalíes"
+  },
+  {
+    "jugador": "ds",
+    "civ": "Italianos"
+  },
+  {
+    "jugador": "qw",
+    "civ": "Khmer"
+  },
+  {
+    "jugador": "fede",
+    "civ": "Hunos"
+  },
+  {
+    "jugador": "as",
+    "civ": "Etíopes"
+  },
+  {
+    "jugador": "ds",
+    "civ": "Malayos"
+  },
+  {
+    "jugador": "qw",
+    "civ": "Malianos"
+  },
+  {
+    "jugador": "fede",
+    "civ": "Japoneses"
+  },
+  {
+    "jugador": "as",
+    "civ": "Bérberes"
+  },
+  {
+    "jugador": "ds",
+    "civ": "Chinos"
+  },
+  {
+    "jugador": "qw",
+    "civ": "Turcos"
+  },
+  {
+    "jugador": "fede",
+    "civ": "Magiares"
+  },
+  {
+    "jugador": "as",
+    "civ": "Tártaros"
+  },
+  {
+    "jugador": "ds",
+    "civ": "Vietnamitas"
+  },
+  {
+    "jugador": "qw",
+    "civ": "Tailandeses"
+  },
+  {
+    "jugador": "fede",
+    "civ": "Persas"
+  },
+  {
+    "jugador": "as",
+    "civ": "Mongoles"
+  },
+  {
+    "jugador": "ds",
+    "civ": "Romanos"
+  },
+  {
+    "jugador": "qw",
+    "civ": "Vikingos"
+  },
+  {
+    "jugador": "fede",
+    "civ": "Bizantinos"
+  },
+  {
+    "jugador": "as",
+    "civ": "Búlgaros"
+  },
+  {
+    "jugador": "ds",
+    "civ": "Portugueses"
+  },
+  {
+    "jugador": "qw",
+    "civ": "Polacos"
+  }
+]
