@@ -23,7 +23,7 @@ export default function CrearJugador({ onJugadorCreado }) {
     try {
       // Llamar solo a la ruta que crea jugador, sin sortear
       const { data } = await axios.post(
-        "http://localhost:4000/api/civs/crear",
+        `${import.meta.env.VITE_API_URL}/api/civs/crear`,
         {
           jugador,
         }

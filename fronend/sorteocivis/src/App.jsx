@@ -11,7 +11,7 @@ function App() {
   const [mensaje, setMensaje] = useState("");
 
   useEffect(() => {
-    socketRef.current = io("http://localhost:4000");
+    socketRef.current = io(`${import.meta.env.VITE_API_URL}`);
 
     socketRef.current.on("jugadores_actualizados", async (nuevosJugadores) => {
       setJugadores(nuevosJugadores);
@@ -20,7 +20,9 @@ function App() {
       const estados = {};
       await Promise.all(
         nuevosJugadores.map(async (jugador) => {
-          const { data } = await axios.get(`http://localhost:4000/api/civs/estado/${jugador}`);
+          const { data } = await axios.get(
+            `${import.meta.env.VITE_API_URL}/api/civs/estado/${jugador}`
+          );
           estados[jugador] = data;
         })
       );
@@ -36,13 +38,17 @@ function App() {
 
     // Carga inicial
     (async () => {
-      const { data } = await axios.get("http://localhost:4000/api/civs/jugadores");
+      const { data } = await axios.get(
+        `${import.meta.env.VITE_API_URL}/api/civs/jugadores`
+      );
       setJugadores(data.jugadores);
 
       const estadosIniciales = {};
       await Promise.all(
         data.jugadores.map(async (jugador) => {
-          const res = await axios.get(`http://localhost:4000/api/civs/estado/${jugador}`);
+          const res = await axios.get(
+            `${import.meta.env.VITE_API_URL}/api/civs/estado/${jugador}`
+          );
           estadosIniciales[jugador] = res.data;
         })
       );
@@ -83,29 +89,33 @@ function App() {
   // };
 
   const sortear = async (jugador) => {
-  try {
-    const { data } = await axios.post(
-      "http://localhost:4000/api/civs/asignar",
-      { jugador }
-    );
-    setMensaje(`Sorteo realizado para ${jugador}`);
-    // No hacer setEstadoJugadores acá
-  } catch (error) {
-    setMensaje(
-      error.response?.data?.error || "Error al sortear la civilización."
-    );
-  }
-};
+    try {
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_API_URL}/api/civs/asignar`,
+        { jugador }
+      );
+      setMensaje(`Sorteo realizado para ${jugador}`);
+      // No hacer setEstadoJugadores acá
+    } catch (error) {
+      setMensaje(
+        error.response?.data?.error || "Error al sortear la civilización."
+      );
+    }
+  };
 
   return (
     <div>
       <h1>Sorteo AoE2</h1>
       <CrearJugador
         onJugadorCreado={async () => {
-          const { data } = await axios.get("http://localhost:4000/api/civs/jugadores");
+          const { data } = await axios.get(
+            `${import.meta.env.VITE_API_URL}/api/civs/jugadores`
+          );
           setJugadores(data.jugadores);
           const nuevoJugador = data.jugadores[data.jugadores.length - 1];
-          const estadoRes = await axios.get(`http://localhost:4000/api/civs/estado/${nuevoJugador}`);
+          const estadoRes = await axios.get(
+            `${import.meta.env.VITE_API_URL}/api/civs/estado/${nuevoJugador}`
+          );
           setEstadoJugadores((prev) => ({
             ...prev,
             [nuevoJugador]: estadoRes.data,

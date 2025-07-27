@@ -25,19 +25,19 @@ export default function SorteoPorJugadorLista({
   const cargarJugadoresYEstados = async () => {
     try {
       const { data } = await axios.get(
-        "http://localhost:4000/api/civs/jugadores"
+        `${import.meta.env.VITE_API_URL}/api/civs/jugadores`
       );
-      const jugadoresCargados = data.jugadores;
+      const jugadoresCargados = data?.jugadores;
       setJugadores(jugadoresCargados);
 
       const promesas = jugadoresCargados.map((jugador) =>
-        axios.get(`http://localhost:4000/api/civs/estado/${jugador}`)
+        axios.get(`${import.meta.env.VITE_API_URL}/api/civs/estado/${jugador}`)
       );
 
       const resultados = await Promise.all(promesas);
       const estados = {};
       resultados.forEach(({ data }) => {
-        estados[data.jugador] = data;
+        estados[data?.jugador] = data;
       });
       setEstadoJugadores(estados);
     } catch (error) {
@@ -49,7 +49,7 @@ export default function SorteoPorJugadorLista({
   // 1. Función para agregar manualmente una civ al jugador
   const agregarCivManual = async (jugador, civ) => {
     try {
-      await axios.post("http://localhost:4000/api/civs/agregar-manual", {
+      await axios.post(`${import.meta.env.VITE_API_URL}/api/civs/agregar-manual`, {
         jugador,
         civ,
       });
@@ -115,9 +115,9 @@ export default function SorteoPorJugadorLista({
 
   const resetear = async (jugador) => {
     try {
-      await axios.post("http://localhost:4000/api/civs/resetear", { jugador });
+      await axios.post(`${import.meta.env.VITE_API_URL}/api/civs/resetear`, { jugador });
       const { data } = await axios.get(
-        `http://localhost:4000/api/civs/estado/${jugador}`
+        `${import.meta.env.VITE_API_URL}/api/civs/estado/${jugador}`
       );
       setEstadoJugadores((prev) => ({
         ...prev,
@@ -131,7 +131,7 @@ export default function SorteoPorJugadorLista({
 
   const eliminarJugador = async (jugador) => {
     try {
-      await axios.delete(`http://localhost:4000/api/civs/jugadores/${jugador}`);
+      await axios.delete(`${import.meta.env.VITE_API_URL}/api/civs/jugadores/${jugador}`);
       setJugadores((prev) => prev.filter((j) => j !== jugador));
       setEstadoJugadores((prev) => {
         const nuevoEstado = { ...prev };
@@ -152,7 +152,7 @@ export default function SorteoPorJugadorLista({
       </Typography>
 
       <Stack spacing={3}>
-        {jugadores.map((jugador) => {
+        {jugadores?.map((jugador) => {
           const estado = estadoJugadores[jugador];
 
           return (
