@@ -1,5 +1,5 @@
 import express from 'express';
-import { agregarCivManualmente, asignarCivJugador, crearJugador, eliminarJugador, listarJugadores, obtenerEstadoJugador, resetearJugador } from '../controllers/civController.js';
+import { agregarCivManualmente, asignarCivJugador, crearJugador, eliminarCiviUsada, eliminarJugador, listarJugadores, obtenerEstadoJugador, resetearJugador } from '../controllers/civController.js';
 
 const router = express.Router();
 
@@ -13,5 +13,7 @@ router.post('/resetear', resetearJugador);
 router.get('/estado/:jugador', obtenerEstadoJugador);
 router.get("/jugadores", listarJugadores);
 router.delete("/jugadores/:nombre", eliminarJugador);
+router.delete("/:jugador/:civiNombre", eliminarCiviUsada);
+
 router.post("/agregar-manual", agregarCivManualmente);
 export default router;

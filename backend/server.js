@@ -1,7 +1,9 @@
 import { createServer } from 'http';
 import { Server } from 'socket.io';
 import app from './app.js'; // tu app de Express
+import { conectarDB } from "./db.js";
 
+conectarDB();
 const httpServer = createServer(app);
 const io = new Server(httpServer, {
   cors: {

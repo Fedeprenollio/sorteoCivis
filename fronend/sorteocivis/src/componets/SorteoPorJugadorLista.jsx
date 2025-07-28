@@ -11,7 +11,6 @@ import {
 import axios from "axios";
 import DeleteIcon from "@mui/icons-material/Delete";
 import IconButton from "@mui/material/IconButton";
-import { io } from "socket.io-client";
 
 export default function SorteoPorJugadorLista({
   jugadores,
@@ -23,7 +22,7 @@ export default function SorteoPorJugadorLista({
   setMensaje,
 }) {
   const [civsManualesLocales, setCivsManualesLocales] = useState({});
-
+  console.log("estadoJugadores", estadoJugadores);
   const cargarJugadoresYEstados = async () => {
     try {
       const { data } = await axios.get(
@@ -78,51 +77,7 @@ export default function SorteoPorJugadorLista({
 
   useEffect(() => {
     cargarJugadoresYEstados();
-
-    // // Crear socket solo una vez
-    // socketRef.current = io("http://localhost:4000");
-
-    // socketRef.current.on("jugadores_actualizados", (nuevosJugadores) => {
-    //   setJugadores(nuevosJugadores);
-    // });
-
-    // socketRef.current.on("estado_actualizado", ({ jugador, estado }) => {
-    //   setEstadoJugadores((prev) => ({
-    //     ...prev,
-    //     [jugador]: estado,
-    //   }));
-    // });
-
-    // return () => {
-    //   if (socketRef.current) {
-    //     socketRef.current.off("jugadores_actualizados");
-    //     socketRef.current.off("estado_actualizado");
-    //     socketRef.current.disconnect();
-    //   }
-    // };
   }, []);
-
-  // const sortear = async (jugador) => {
-  //   try {
-  //     const { data } = await axios.post(
-  //       "http://localhost:4000/api/civs/asignar",
-  //       { jugador }
-  //     );
-  //     setMensaje(`Sorteo realizado para ${jugador}`);
-  //     setEstadoJugadores((prev) => ({
-  //       ...prev,
-  //       [jugador]: {
-  //         ...prev[jugador],
-  //         disponibles: prev[jugador].disponibles.filter((c) => c !== data.civ),
-  //         usadas: [...prev[jugador].usadas, data.civ],
-  //       },
-  //     }));
-  //   } catch (error) {
-  //     setMensaje(
-  //       error.response?.data?.error || "Error al sortear la civilización."
-  //     );
-  //   }
-  // };
 
   const resetear = async (jugador) => {
     try {
@@ -159,6 +114,30 @@ export default function SorteoPorJugadorLista({
       console.error(error);
     }
   };
+
+ const handleEliminarCivi = async (jugador, nombreCivi) => {
+  try {
+    await axios.delete(
+      `${import.meta.env.VITE_API_URL}/api/civs/${jugador}/${nombreCivi}`
+    );
+
+    // Volvés a cargar SOLO el estado del jugador
+    const { data } = await axios.get(
+      `${import.meta.env.VITE_API_URL}/api/civs/estado/${jugador}`
+    );
+
+    setEstadoJugadores((prev) => ({
+      ...prev,
+      [jugador]: data,
+    }));
+
+    setMensaje(`Civilización "${nombreCivi}" eliminada de ${jugador}.`);
+  } catch (err) {
+    console.error("Error eliminando civi:", err);
+    setMensaje("Error al eliminar civilización.");
+  }
+};
+
 
   return (
     <Paper sx={{ p: 4, maxWidth: 900, mx: "auto", my: 4 }}>
@@ -225,23 +204,18 @@ export default function SorteoPorJugadorLista({
                   Usadas:
                 </Typography>
                 <Stack direction="row" flexWrap="wrap" gap={1} my={1}>
-                  {estado?.usadas?.length ? (
-                    estado.usadas.map((civ) => {
-                      const esManual =
-                        civsManualesLocales[jugador]?.includes(civ);
-                      return (
-                        <Chip
-                          key={civ}
-                          label={esManual ? `${civ} (M)` : civ}
-                          color={esManual ? "secondary" : "default"}
-                          variant="filled"
-                          title={esManual ? "Agregada manualmente" : "Sorteada"}
-                        />
-                      );
-                    })
-                  ) : (
-                    <Typography variant="body2">Ninguna</Typography>
-                  )}
+                  {estado?.usadas.map(({ nombre, tipo }) => (
+                    <Chip
+                      key={nombre}
+                      label={tipo === "manual" ? `${nombre} (M)` : `${nombre} (S)`}
+                      color={tipo === "manual" ? "secondary" : "primary"}
+                      onDelete={() => handleEliminarCivi(jugador, nombre)} // ⬅️ esto lo agregás
+                      variant="filled"
+                      title={
+                        tipo === "manual" ? "Agregada manualmente" : "Sorteada"
+                      }
+                    />
+                  ))}
                 </Stack>
               </Box>
 

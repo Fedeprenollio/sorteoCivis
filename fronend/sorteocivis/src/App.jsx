@@ -62,31 +62,6 @@ function App() {
     };
   }, []);
 
-  // Mover la función sortear acá para evitar duplicados en estado
-  // const sortear = async (jugador) => {
-  //   try {
-  //     const { data } = await axios.post(
-  //       "http://localhost:4000/api/civs/asignar",
-  //       { jugador }
-  //     );
-  //     setMensaje(`Sorteo realizado para ${jugador}`);
-
-  //     // No actualices localmente: el evento socket va a actualizar el estado automáticamente
-  //     // Pero si querés feedback inmediato, podés actualizar localmente acá
-  //     setEstadoJugadores((prev) => ({
-  //       ...prev,
-  //       [jugador]: {
-  //         ...prev[jugador],
-  //         disponibles: prev[jugador].disponibles.filter((c) => c !== data.civ),
-  //         usadas: [...prev[jugador].usadas, data.civ],
-  //       },
-  //     }));
-  //   } catch (error) {
-  //     setMensaje(
-  //       error.response?.data?.error || "Error al sortear la civilización."
-  //     );
-  //   }
-  // };
 
   const sortear = async (jugador) => {
     try {
